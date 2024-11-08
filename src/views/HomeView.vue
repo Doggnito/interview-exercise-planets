@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import ThePlanets from '@/components/ThePlanets.vue';
+import ThePlanets from '@/components/planets/ThePlanets.vue';
 
 </script>
 

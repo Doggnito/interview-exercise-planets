@@ -1,4 +1,2 @@
-@use './reset';
-@use './fonts';
-@use './variables';
-@use './global';
+@forward './fonts';
+@forward './global';

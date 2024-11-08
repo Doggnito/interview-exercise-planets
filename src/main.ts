@@ -4,6 +4,7 @@ import { Quasar } from "quasar";
 import App from "./App.vue";
 import router from "./router";
 import { api } from "./axios";
+import "./scss/index.scss";
 
 // Import icon libraries
 import "@quasar/extras/material-icons/material-icons.css";
