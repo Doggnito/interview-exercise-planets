@@ -5,6 +5,7 @@ import { Carousel, Navigation, Slide } from 'vue3-carousel';
 import PlanetSlide from '@/components/planet/PlanetSlide.vue';
 import { useQuasar } from 'quasar';
 import 'vue3-carousel/dist/carousel.css';
+import { CAROUSEL_ITEMS_DEFAULT, CAROUSEL_ITEMS_FOR_LG, CAROUSEL_ITEMS_FOR_MD } from './constant';
 
 defineProps({
   carouselData: {
@@ -13,39 +14,53 @@ defineProps({
   }
 })
 
-const $q = useQuasar();
-const { md, lg, xl } = $q.screen.sizes;
+const { screen } = useQuasar();
+const { md, lg } = screen.sizes;
+
 const carouselConfig = {
-  itemsToShow: 1,
+  itemsToShow: CAROUSEL_ITEMS_DEFAULT,
   snapAlign: 'center',
   breakpointMode: 'carousel',
   breakpoints: {
     [md]: {
-      itemsToShow: 3,
-      snapAlign: 'start',
+      itemsToShow: CAROUSEL_ITEMS_FOR_MD,
     },
     [lg]: {
-      itemsToShow: 5,
-      snapAlign: 'start',
-    },
-    [xl]: {
-      itemsToShow: 5,
-      snapAlign: 'start',
+      itemsToShow: CAROUSEL_ITEMS_FOR_LG,
     },
   },
 }
 
 </script>
-
+ 
 <template>
-  <Carousel v-bind="carouselConfig">
-    <template #slides>
-      <Slide v-for="(planet, planetIndex) in carouselData" :key="planetIndex">
-        <PlanetSlide :planet="planet" />
-      </Slide>
-    </template>
-    <template #addons>
-      <Navigation />
-    </template>
-  </Carousel>
+  <div class="carousel-wrapper">
+    <Carousel v-bind="carouselConfig" wrapAround snapAlign="start">
+      <template #slides>
+        <Slide v-for="(planet, planetIndex) in carouselData" :key="planetIndex">
+          <PlanetSlide :planet="planet" />
+        </Slide>
+      </template>
+      <template #addons>
+        <Navigation />
+      </template>
+    </Carousel>
+  </div>
 </template>
+
+<style lang="scss" scoped>
+.carousel-wrapper {
+  margin-bottom: 20px;
+  width: 100%;
+}
+
+:deep(.carousel__slide) {
+  align-items: start;
+  margin-bottom: 50px;
+  min-height: 600px;
+}
+
+:deep(.carousel__icon) {
+  fill: $grey-1;
+}
+</style>

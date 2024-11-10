@@ -3,7 +3,7 @@ import type { PlanetSelected } from '@/interfaces/planet';
 import type { Entries } from '@/interfaces/utils';
 import { addSpacesToNumber, firstToUpperCase, replaceDashesWithSpaces } from '@/utils';
 import { computed, type PropType } from 'vue';
-
+import IconLink from '../shared/IconLink.vue';
 
 const props = defineProps({
   planet: {
@@ -20,10 +20,14 @@ const planetName = computed(() => {
   return props.planet.name;
 })
 
+const planetUrl = computed(() => {
+  return props.planet.url;
+})
 
 const preparePlanetData = (planet: PlanetSelected) => {
   delete planet.name;
-  return (Object.entries(planet) as Entries<Omit<PlanetSelected, 'name'>>).map(([key, value]) => {
+  delete planet.url;
+  return (Object.entries(planet) as Entries<Omit<PlanetSelected, 'name' | 'url'>>).map(([key, value]) => {
     value = value.trim();
     if (key === 'population') {
       value = addSpacesToNumber(value);
@@ -40,11 +44,47 @@ const preparePlanetData = (planet: PlanetSelected) => {
 </script>
 
 <template>
-  <h2 v-text="planetName" />
-  <ul class="planet">
-    <li v-for="([propertyKey, value], index) in planetModified" :key="index">
-      <span>{{ propertyKey }}: </span>
-      <span>{{ value }}</span>
-    </li>
-  </ul>
+  <div>
+    <div class="relative">
+      <h2 v-text="planetName" class="planet-name" />
+      <IconLink
+        v-if="planetUrl"
+        :href="planetUrl"
+        name="open_in_new"
+        size="sm"
+        class="link"
+      />
+    </div>
+    <ul class="description">
+      <li v-for="([propertyKey, value], index) in planetModified" :key="index" class="description__item">
+        <span>{{ propertyKey }}: </span>
+        <span v-text="value" class="text-right" />
+      </li>
+    </ul>
+  </div>
 </template>
+
+<style lang="scss" scoped>
+.planet-name {
+  margin-bottom: 10px;
+  text-align: center;
+  font-size: 2.5rem;
+}
+
+.link {
+  position: absolute;
+  right: 20px;
+  top: 0;
+  transform: translateY(-50%);
+}
+
+.description {
+  margin: 0 20px 20px;
+
+  &__item {
+    display: flex;
+    justify-content: space-between;
+    color: $grey-5;
+  }
+}
+</style>

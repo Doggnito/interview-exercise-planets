@@ -1,10 +1,16 @@
 import { ref } from "vue";
 import { defineStore } from "pinia";
-import { api } from "@/axios";
 import type { GetPlanetsParams, PlanetData } from "@/interfaces/planet";
+import { useApiStore } from "./api";
 
 export const usePlanetsStore = defineStore("planets", () => {
-  const planetData = ref<PlanetData | null>(null);
+  const apiStore = useApiStore();
+  const planetData = ref<PlanetData>({
+    results: [],
+    next: null,
+    previous: null,
+    count: 0,
+  });
   const searchPlanetQuery = ref<string | null>(null);
 
   async function getPlanets(data: { page?: number | undefined }) {
@@ -16,11 +22,11 @@ export const usePlanetsStore = defineStore("planets", () => {
     if (page) {
       params.page = page;
     }
-    const response = await api.get("planets", {
+    const response = await apiStore.getWithCancel("planets", {
       params,
     });
 
-    return await response.data;
+    return await response?.data;
   }
   async function getAndSetPlanets() {
     const planets = await getPlanets({});
@@ -30,7 +36,10 @@ export const usePlanetsStore = defineStore("planets", () => {
     page: number;
   }): Promise<PlanetData> {
     const { page } = data;
-    return await getPlanets({ page });
+    const planets: PlanetData | undefined = await getPlanets({ page });
+    if (!planets) return planetData.value;
+    planetData.value = planets;
+    return planets;
   }
 
   return {

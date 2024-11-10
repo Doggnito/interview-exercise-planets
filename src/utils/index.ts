@@ -9,3 +9,7 @@ export const firstToUpperCase = (text: string) => {
 export const replaceDashesWithSpaces = (text: string) => {
   return text.replace("_", " ");
 };
+
+export const normalizeNumber = (val: number, min: number, max: number) => {
+  return (val - min) / (max - min);
+};

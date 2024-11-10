@@ -29,6 +29,6 @@ export interface Planet {
 
 export type PlanetSelected = Pick<
   Planet,
-  "population" | "rotation_period" | "climate" | "gravity" | "created" | "url"
+  "population" | "rotation_period" | "climate" | "gravity" | "created"
 > &
-  Partial<Pick<Planet, "name">>;
+  Partial<Pick<Planet, "name" | "url">>;
