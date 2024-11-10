@@ -32,3 +32,18 @@ export type PlanetSelected = Pick<
   "population" | "rotation_period" | "climate" | "gravity" | "created"
 > &
   Partial<Pick<Planet, "name" | "url">>;
+
+export type PlanetSortOptionValue =
+  | "population"
+  | "rotation_period"
+  | "surface_water"
+  | "diameter";
+
+export type PlanetSortOption = { value: PlanetSortOptionValue; label: string };
+
+export enum SortingOrder {
+  Ascending = "ascending",
+  Descending = "descending",
+}
+
+export type SortingOrderOption = { value: SortingOrder; label: string };

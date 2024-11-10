@@ -5,10 +5,10 @@ import { Carousel, Navigation, Slide } from 'vue3-carousel';
 import PlanetSlide from '@/components/planet/PlanetSlide.vue';
 import { useQuasar } from 'quasar';
 import 'vue3-carousel/dist/carousel.css';
-import { CAROUSEL_ITEMS_DEFAULT, CAROUSEL_ITEMS_FOR_LG, CAROUSEL_ITEMS_FOR_MD } from './constant';
+import { CAROUSEL_ITEMS_DEFAULT, CAROUSEL_ITEMS_FOR_LG, CAROUSEL_ITEMS_FOR_MD } from '@/components/planets/constant';
 
 defineProps({
-  carouselData: {
+  planetsList: {
     type: Array as PropType<Planet[]>,
     required: true,
   }
@@ -37,7 +37,7 @@ const carouselConfig = {
   <div class="carousel-wrapper">
     <Carousel v-bind="carouselConfig" wrapAround snapAlign="start">
       <template #slides>
-        <Slide v-for="(planet, planetIndex) in carouselData" :key="planetIndex">
+        <Slide v-for="(planet, planetIndex) in planetsList" :key="planetIndex">
           <PlanetSlide :planet="planet" />
         </Slide>
       </template>

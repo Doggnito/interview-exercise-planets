@@ -1,19 +1,17 @@
 <script lang="ts" setup>
 import { usePlanetsStore } from '@/stores/planet';
-import { computed, ref } from 'vue';
-import TheSelect from '../shared/TheSelect.vue';
+import { computed } from 'vue';
+import TheSelect from '@/components/shared/TheSelect.vue';
 
 const emit = defineEmits<{
   (e: 'filterPlanets'): void;
 }>();
 
 const planetsStore = usePlanetsStore();
-const filterValue = ref<string | null>(null);
 
 const onInputValue = async (val: string) => {
-  filterValue.value = val;
   planetsStore.searchPlanetQuery = val;
-  await planetsStore.getAndSetPlanets();
+  await planetsStore.getPlanets();
   emit('filterPlanets');
 }
 
@@ -24,7 +22,7 @@ const planetNames = computed(() =>
 
 <template>
   <TheSelect
-    :modelValue="filterValue"
+    :modelValue="planetsStore.searchPlanetQuery"
     use-input
     hide-selected
     fill-input
@@ -32,7 +30,6 @@ const planetNames = computed(() =>
     label="Search planets"
     :options="planetNames"
     @inputValue="onInputValue"
-    style="width: 250px"
   >
     <template v-slot:noOption>
       <q-item>

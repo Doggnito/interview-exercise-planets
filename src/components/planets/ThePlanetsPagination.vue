@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { usePlanetsStore } from '@/stores/planet';
 import { computed, ref, watch } from 'vue';
-import { DEFAULT_CURRENT_PAGE } from './constant';
+import { DEFAULT_CURRENT_PAGE } from '@/components/planets/constant';
 
 const emit = defineEmits<{
   (e: 'pageChanged', value: number): void,

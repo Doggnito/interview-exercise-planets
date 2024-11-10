@@ -1,44 +1,42 @@
 <script setup lang="ts">
-import ThePlanetsFilter from '@/components/planets/ThePlanetsFilter.vue';
 import ThePlanetsPagination from '@/components/planets/ThePlanetsPagination.vue';
-import type { Planet } from '@/interfaces/planet';
 import { usePlanetsStore } from '@/stores/planet';
-import { computed, onMounted, ref } from 'vue';
+import { computed, onMounted } from 'vue';
 import ThePlanetsCarousel from '@/components/planets/ThePlanetsCarousel.vue';
-import { CAROUSEL_ITEMS_DEFAULT, CAROUSEL_ITEMS_FOR_LG, CAROUSEL_ITEMS_FOR_MD, DEFAULT_CURRENT_PAGE } from './constant';
-import ThePlanetsList from './ThePlanetsList.vue';
+import { CAROUSEL_ITEMS_DEFAULT, CAROUSEL_ITEMS_FOR_LG, CAROUSEL_ITEMS_FOR_MD } from '@/components/planets/constant';
+import ThePlanetsList from '@/components/planets/ThePlanetsList.vue';
 import { useQuasar } from 'quasar';
+import ThePlanetsFilters from '@/components/planets/filters/ThePlanetsFilters.vue';
 
 const planetStore = usePlanetsStore();
-const planetsPaginated = ref<Planet[]>([]);
 
 const refreshPlanets = async (newValue: number) => {
-  planetsPaginated.value = (await planetStore.getPlanetsWithPagination({ page: newValue })).results;
+  await planetStore.getPlanets({ page: newValue });
 }
 
 const { screen } = useQuasar();
 const { md: isLowerThanMD, lg: isLowerThanLG, xl: isLowerThanXL } = screen.lt;
 const showListWithoutCarousel = computed(() => {
-  const isSmList = (isLowerThanMD && planetsPaginated.value.length === CAROUSEL_ITEMS_DEFAULT);
-  const isMdList = (isLowerThanLG && planetsPaginated.value.length <= CAROUSEL_ITEMS_FOR_MD);
-  const isLgList = (isLowerThanXL && planetsPaginated.value.length <= CAROUSEL_ITEMS_FOR_LG);
+  const isSmList = (isLowerThanMD && planetStore.sortedPlanetsList.length === CAROUSEL_ITEMS_DEFAULT);
+  const isMdList = (isLowerThanLG && planetStore.sortedPlanetsList.length <= CAROUSEL_ITEMS_FOR_MD);
+  const isLgList = (isLowerThanXL && planetStore.sortedPlanetsList.length <= CAROUSEL_ITEMS_FOR_LG);
   const isXlList = !isLowerThanXL;
   return isSmList || isMdList || isLgList || isXlList;
 })
 
 onMounted(async () => {
-  planetsPaginated.value = (await planetStore.getPlanetsWithPagination({ page: DEFAULT_CURRENT_PAGE })).results;
+  await planetStore.getPlanets();
 })
 </script>
 
 <template>
   <section class="column justify-center items-center">
-    <ThePlanetsFilter @filterPlanets="refreshPlanets(DEFAULT_CURRENT_PAGE)" />
+    <ThePlanetsFilters @refreshPlanets="refreshPlanets" />
     <component
       :is="showListWithoutCarousel ? ThePlanetsList : ThePlanetsCarousel"
-      :carouselData="planetsPaginated"
+      :planetsList="planetStore.sortedPlanetsList"
     />
-    <ThePlanetsPagination class="q-mb-xl" @pageChanged="refreshPlanets" />
+    <ThePlanetsPagination v-if="planetStore.sortedPlanetsList.length" class="q-mb-xl" @pageChanged="refreshPlanets" />
   </section>
   <Teleport to="body">
     <div class="shooting-stars">
@@ -52,6 +50,7 @@ onMounted(async () => {
   position: absolute;
   top: 0;
   left: 0;
+  z-index: -1;
   width: 100%;
   height: 100%;
   overflow: hidden;
@@ -63,7 +62,6 @@ onMounted(async () => {
 
 .shooting-stars__star {
   position: absolute;
-  z-index: -1;
   width: 4px;
   height: 4px;
   background: #fff;
@@ -123,82 +121,4 @@ $star-num-classes: length($star-animation-delays);
   }
 }
 
-// .shooting-star:nth-child(1){
-//   top: 0;
-//   right: 0;
-//   left: initial;
-//   animation-delay: 0s;
-//   animation-duration: 1s;
-  
-//   &::before {
-//     width: 100px;
-//   }
-// }
-// .shooting-star:nth-child(2){
-//   top: 0;
-//   right: 80px;
-//   left: initial;
-//   animation-delay: 0.2s;
-//   animation-duration: 3s;
-  
-//   &::before {
-//     width: 100px;
-//   }
-// }
-// .shooting-star:nth-child(3){
-//   top: 80px;
-//   right: 0px;
-//   left: initial;
-//   animation-delay: 0.4s;
-//   animation-duration: 2s;
-// }
-// .shooting-star:nth-child(4){
-//   top: 0;
-//   right: 180px;
-//   left: initial;
-//   animation-delay: 0.6s;
-//   animation-duration: 1.5s;
-// }
-// .shooting-star:nth-child(5){
-//   top: 0;
-//   right: 400px;
-//   left: initial;
-//   animation-delay: 0.8s;
-//   animation-duration: 2.5s;
-// }
-// .shooting-star:nth-child(6){
-//   top: 0;
-//   right: 600px;
-//   left: initial;
-//   animation-delay: 1s;
-//   animation-duration: 3s;
-// }
-// .shooting-star:nth-child(7){
-//   top: 300px;
-//   right: 0px;
-//   left: initial;
-//   animation-delay: 1.2s;
-//   animation-duration: 1.75s;
-// }
-// .shooting-star:nth-child(8){
-//   top: 0px;
-//   right: 700px;
-//   left: initial;
-//   animation-delay: 1.4s;
-//   animation-duration: 1.25s;
-// }
-// .shooting-star:nth-child(9){
-//   top: 0px;
-//   right: 1000px;
-//   left: initial;
-//   animation-delay: 0.75s;
-//   animation-duration: 2.25s;
-// }
-// .shooting-star:nth-child(9){
-//   top: 0px;
-//   right: 450px;
-//   left: initial;
-//   animation-delay: 2.75s;
-//   animation-duration: 2.75s;
-// }
 </style>

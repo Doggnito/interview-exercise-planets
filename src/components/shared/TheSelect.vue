@@ -1,5 +1,4 @@
 <script lang="ts" setup>
-import type { QSelect } from 'quasar';
 import { useSlots } from 'vue';
 
 const emit = defineEmits<{
@@ -20,7 +19,7 @@ const slots = useSlots();
     rounded
     dense
     :popupContentClass="$style['select-popup']"
-    :inputClass="$style['input-class']"
+    :class="$style.select"
     @inputValue="value => emit('inputValue', value)"
   >
     <template  v-if="slots.noOption" v-slot:no-option>
@@ -35,6 +34,14 @@ div.select-popup {
  
   & :global(.q-item) {
     min-height: 40px;
+  }
+}
+
+.select {
+  width: 240px;
+
+  @media (max-width: $breakpoint-sm-min) {
+    width: 150px;
   }
 }
 </style>

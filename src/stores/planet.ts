@@ -1,7 +1,14 @@
-import { ref } from "vue";
+import { computed, ref } from "vue";
 import { defineStore } from "pinia";
-import type { GetPlanetsParams, PlanetData } from "@/interfaces/planet";
+import {
+  SortingOrder,
+  type GetPlanetsParams,
+  type PlanetData,
+  type PlanetSortOption,
+  type SortingOrderOption,
+} from "@/interfaces/planet";
 import { useApiStore } from "./api";
+import { DEFAULT_CURRENT_PAGE } from "@/components/planets/constant";
 
 export const usePlanetsStore = defineStore("planets", () => {
   const apiStore = useApiStore();
@@ -12,8 +19,32 @@ export const usePlanetsStore = defineStore("planets", () => {
     count: 0,
   });
   const searchPlanetQuery = ref<string | null>(null);
+  const sortingKey = ref<PlanetSortOption | null>(null);
+  const sortingOrder = ref<SortingOrderOption | null>(null);
 
-  async function getPlanets(data: { page?: number | undefined }) {
+  const sortedPlanetsList = computed(() => {
+    const sortKey = sortingKey.value?.value;
+    if (!sortKey) return planetData.value.results;
+
+    return planetData.value.results.sort((a, b) => {
+      const sortingOrderModifier =
+        sortingOrder.value?.value === SortingOrder.Ascending ? 1 : -1;
+      const aValueNumeric = Number(a[sortKey]);
+      const bValueNumeric = Number(b[sortKey]);
+
+      if (isNaN(aValueNumeric)) return 1;
+      if (isNaN(bValueNumeric)) return -1;
+      return (aValueNumeric - bValueNumeric) * sortingOrderModifier;
+    });
+  });
+
+  async function getPlanets(
+    data: {
+      page: number;
+    } = {
+      page: DEFAULT_CURRENT_PAGE,
+    }
+  ) {
     const { page } = data;
     const params: GetPlanetsParams = {};
     if (searchPlanetQuery.value) {
@@ -22,31 +53,20 @@ export const usePlanetsStore = defineStore("planets", () => {
     if (page) {
       params.page = page;
     }
-    const response = await apiStore.getWithCancel("planets", {
+    const planets = await apiStore.getWithCancel<PlanetData>("planets", {
       params,
     });
 
-    return await response?.data;
-  }
-  async function getAndSetPlanets() {
-    const planets = await getPlanets({});
+    if (!planets) return;
     planetData.value = planets;
-  }
-  async function getPlanetsWithPagination(data: {
-    page: number;
-  }): Promise<PlanetData> {
-    const { page } = data;
-    const planets: PlanetData | undefined = await getPlanets({ page });
-    if (!planets) return planetData.value;
-    planetData.value = planets;
-    return planets;
   }
 
   return {
     searchPlanetQuery,
     planetData,
+    sortingKey,
+    sortedPlanetsList,
+    sortingOrder,
     getPlanets,
-    getAndSetPlanets,
-    getPlanetsWithPagination,
   };
 });

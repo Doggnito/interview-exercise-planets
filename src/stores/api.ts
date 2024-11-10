@@ -8,10 +8,10 @@ export const useApiStore = defineStore("apiStore", () => {
   const loading = ref(false);
   const error = ref<string | null>(null);
 
-  const getWithCancel = async (
+  const getWithCancel = async <T>(
     url: string,
     config?: AxiosRequestConfig<unknown> | undefined
-  ) => {
+  ): Promise<T | undefined> => {
     if (controllers.value.has(url)) {
       controllers.value.get(url).abort();
     }
@@ -21,7 +21,8 @@ export const useApiStore = defineStore("apiStore", () => {
     error.value = null;
 
     try {
-      return await api.get(url, { signal: controller.signal, ...config });
+      return (await api.get(url, { signal: controller.signal, ...config }))
+        .data;
     } catch (err: unknown) {
       if (!(err instanceof CanceledError)) {
         error.value = "Failed to fetch data";
