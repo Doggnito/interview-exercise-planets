@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed, type PropType } from 'vue';
 import { colors } from 'quasar'
-import { TERRAIN_COLOR_MAP } from './constant';
+import { TERRAIN_COLOR_MAP } from '@/components/planets/planet/constant';
 import { normalizeNumber } from '@/utils';
 
 const props = defineProps({
@@ -35,7 +35,7 @@ const planetColors = computed(() =>
 const planetLinearGradient = computed(() => {
   switch (planetColors.value.length) {
     case 0:
-      return `linear-gradient(90deg, ${getPaletteColor('grey-7')} 0%, ${getPaletteColor('grey-5')} 25%, #fff 50%, ${getPaletteColor('grey-5')}, ${getPaletteColor('grey-7')} 100%)`;;
+      return `linear-gradient(90deg, ${getPaletteColor('grey-7')} 0%, ${getPaletteColor('grey-5')} 25%, #fff 50%, ${getPaletteColor('grey-5')}, ${getPaletteColor('grey-7')} 100%)`;
     case 1:
       return `linear-gradient(90deg, ${planetColors.value[0]} 0%, #fff 50%, ${planetColors.value[0]} 100%)`;
     case 2:

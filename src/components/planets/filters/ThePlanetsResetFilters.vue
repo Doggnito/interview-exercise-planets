@@ -9,9 +9,15 @@ const resetFilters = () => {
   planetsStore.sortingKey = null;
   planetsStore.searchPlanetQuery = null;
 }
-
 </script>
 
 <template>
-  <q-btn round color="primary" icon="close" size="sm" @click="resetFilters" />
+  <q-btn
+    rounded 
+    color="primary"
+    icon-right="close"
+    size="md"
+    label="Clear filters"
+    @click="resetFilters"
+  />
 </template>

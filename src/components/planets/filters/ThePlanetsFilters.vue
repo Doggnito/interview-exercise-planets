@@ -8,7 +8,6 @@ import ThePlanetsResetFilters from '@/components/planets/filters/ThePlanetsReset
 const emit = defineEmits<{
   (e: 'refreshPlanets', page: number): void;
 }>();
-
 </script>
 
 <template>

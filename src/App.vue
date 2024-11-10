@@ -1,8 +1,6 @@
 <script setup lang="ts">
 import { RouterView } from 'vue-router'
-import IconLink from '@/components/shared/IconLink.vue';
-
-const githubUrl = new URL('/src/assets/github-mark-white.svg', import.meta.url).href
+import TheFooter from './components/TheFooter.vue';
 </script>
 
 <template>
@@ -12,14 +10,7 @@ const githubUrl = new URL('/src/assets/github-mark-white.svg', import.meta.url).
   <main>
     <RouterView />
   </main>
-  <footer class="row justify-center q-ma-xl">
-    <span class="text-body1 q-mr-sm">Dominik Kapusta</span>
-    <IconLink
-      href="https://github.com/Doggnito"
-      :name="`img:${githubUrl}`"
-      size="sm"
-    />
-  </footer>
+  <TheFooter />
 </template>
 
 <style lang="scss" scoped>

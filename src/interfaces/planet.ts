@@ -27,7 +27,7 @@ export interface Planet {
   edited: string;
 }
 
-export type PlanetSelected = Pick<
+export type PlanetPropsForDescription = Pick<
   Planet,
   "population" | "rotation_period" | "climate" | "gravity" | "created"
 > &

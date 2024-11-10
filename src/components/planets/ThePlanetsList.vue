@@ -1,8 +1,7 @@
 <script setup lang="ts">
 import type { Planet } from '@/interfaces/planet';
 import type { PropType } from 'vue';
-import PlanetSlide from '@/components/planet/PlanetSlide.vue';
-import 'vue3-carousel/dist/carousel.css';
+import PlanetSlide from '@/components/planets/planet/PlanetSlide.vue';
 
 defineProps({
   planetsList: {
@@ -10,7 +9,6 @@ defineProps({
     required: true,
   }
 })
-
 </script>
  
 <template>
@@ -27,7 +25,7 @@ defineProps({
   flex-wrap: wrap;
   justify-content: center;
   column-gap: 40px;
-  margin-bottom: 20px;
+  margin: 0 20px 20px;
 
   &__item {
     min-height: 600px;

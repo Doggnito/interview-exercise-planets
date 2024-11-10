@@ -8,7 +8,10 @@ import {
   type SortingOrderOption,
 } from "@/interfaces/planet";
 import { useApiStore } from "./api";
-import { DEFAULT_CURRENT_PAGE } from "@/components/planets/constant";
+import {
+  DEFAULT_CURRENT_PAGE,
+  DEFAULT_SORTING_ORDER,
+} from "@/components/planets/constant";
 
 export const usePlanetsStore = defineStore("planets", () => {
   const apiStore = useApiStore();
@@ -20,13 +23,13 @@ export const usePlanetsStore = defineStore("planets", () => {
   });
   const searchPlanetQuery = ref<string | null>(null);
   const sortingKey = ref<PlanetSortOption | null>(null);
-  const sortingOrder = ref<SortingOrderOption | null>(null);
+  const sortingOrder = ref<SortingOrderOption | null>(DEFAULT_SORTING_ORDER);
 
   const sortedPlanetsList = computed(() => {
     const sortKey = sortingKey.value?.value;
     if (!sortKey) return planetData.value.results;
 
-    return planetData.value.results.sort((a, b) => {
+    return planetData.value.results.toSorted((a, b) => {
       const sortingOrderModifier =
         sortingOrder.value?.value === SortingOrder.Ascending ? 1 : -1;
       const aValueNumeric = Number(a[sortKey]);

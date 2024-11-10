@@ -1,13 +1,13 @@
 <script setup lang="ts">
-import type { PlanetSelected } from '@/interfaces/planet';
+import type { PlanetPropsForDescription } from '@/interfaces/planet';
 import type { Entries } from '@/interfaces/utils';
 import { addSpacesToNumber, firstToUpperCase, replaceDashesWithSpaces } from '@/utils';
 import { computed, type PropType } from 'vue';
-import IconLink from '../shared/IconLink.vue';
+import IconLink from '@/components/shared/IconLink.vue';
 
 const props = defineProps({
   planet: {
-    type: Object as PropType<PlanetSelected>,
+    type: Object as PropType<PlanetPropsForDescription>,
     required: true,
   }
 })
@@ -24,10 +24,10 @@ const planetUrl = computed(() => {
   return props.planet.url;
 })
 
-const preparePlanetData = (planet: PlanetSelected) => {
+const preparePlanetData = (planet: PlanetPropsForDescription) => {
   delete planet.name;
   delete planet.url;
-  return (Object.entries(planet) as Entries<Omit<PlanetSelected, 'name' | 'url'>>).map(([key, value]) => {
+  return (Object.entries(planet) as Entries<Omit<PlanetPropsForDescription, 'name' | 'url'>>).map(([key, value]) => {
     value = value.trim();
     if (key === 'population') {
       value = addSpacesToNumber(value);
@@ -40,7 +40,6 @@ const preparePlanetData = (planet: PlanetSelected) => {
     return [key, value];
   });
 }
-
 </script>
 
 <template>
