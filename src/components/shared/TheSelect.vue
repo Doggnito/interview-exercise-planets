@@ -2,6 +2,7 @@
 import { useSlots } from 'vue';
 
 const emit = defineEmits<{
+  /** Fired when value of input has changed */
   (e: 'inputValue', value: string): void
 }>();
 

@@ -6,6 +6,7 @@ import { computed, type PropType } from 'vue';
 import IconLink from '@/components/shared/IconLink.vue';
 
 const props = defineProps({
+  /** The single planet object containing part of Planet data - population, rotation_period: string, climate, gravity, created, name, url */
   planet: {
     type: Object as PropType<PlanetPropsContent>,
     required: true,

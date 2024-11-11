@@ -8,6 +8,7 @@ import { CAROUSEL_ITEMS_DEFAULT, CAROUSEL_ITEMS_FOR_LG, CAROUSEL_ITEMS_FOR_MD } 
 import 'vue3-carousel/dist/carousel.css';
 
 defineProps({
+  /** Array of planets, displaying as list or in carousel */
   planetsList: {
     type: Array as PropType<Planet[]>,
     required: true,

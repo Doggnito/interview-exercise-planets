@@ -4,6 +4,7 @@ import { computed, ref, watch } from 'vue';
 import { DEFAULT_CURRENT_PAGE } from '@/components/planets/constant';
 
 const emit = defineEmits<{
+  /** Fired when pagination page change */
   (e: 'pageChanged', value: number): void,
 }>();
 

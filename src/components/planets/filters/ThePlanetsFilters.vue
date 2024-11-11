@@ -6,6 +6,7 @@ import ThePlanetsSortOrder from '@/components/planets/filters/ThePlanetsSortOrde
 import ThePlanetsResetFilters from '@/components/planets/filters/ThePlanetsResetFilters.vue';
 
 const emit = defineEmits<{
+  /** Fired when ThePlanetsSearch filterPlanets event is fired */
   (e: 'refreshPlanets', page: number): void;
 }>();
 </script>

@@ -5,6 +5,7 @@ import PlanetSlideVisual from '@/components/planets/planet/PlanetSlideVisual.vue
 import PlanetSlideDescription from '@/components/planets/planet/PlanetSlideContent.vue';
 
 const props = defineProps({
+  /** The single planet object containing Planet data */
   planet: {
     type: Object as PropType<Planet>,
     required: true,

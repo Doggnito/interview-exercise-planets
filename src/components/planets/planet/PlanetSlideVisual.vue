@@ -5,14 +5,17 @@ import { TERRAIN_COLOR_MAP } from '@/components/planets/planet/constant';
 import { normalizeNumber } from '@/utils';
 
 const props = defineProps({
+  /** Used for rotation speed of planet visual */
   rotationPeriod: {
     type: String,
     required: true,
   },
+  /** Used for specifying size of planet visual */
   diameter: {
     type: String,
     required: true,
   },
+  /** Used for specifying colors of planet */
   terrain: {
     type: Array as PropType<string[]>,
     required: true,
@@ -29,7 +32,7 @@ const planetColors = computed(() =>
   props.terrain
     .filter(terrain => terrain in TERRAIN_COLOR_MAP)
     .map(terrain => getPaletteColor(TERRAIN_COLOR_MAP[(terrain as keyof typeof TERRAIN_COLOR_MAP)]))
-    .slice(0, 2)
+    .slice(0, 3)
 )
   
 const planetLinearGradient = computed(() => {

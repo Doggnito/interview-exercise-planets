@@ -4,6 +4,7 @@ import { computed } from 'vue';
 import TheSelect from '@/components/shared/TheSelect.vue';
 
 const emit = defineEmits<{
+   /** Fired when input value changes */
   (e: 'filterPlanets'): void;
 }>();
 

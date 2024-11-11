@@ -4,6 +4,7 @@ import type { PropType } from 'vue';
 import PlanetSlide from '@/components/planets/planet/PlanetSlide.vue';
 
 defineProps({
+  /** Array of planets, displaying as list */
   planetsList: {
     type: Array as PropType<Planet[]>,
     required: true,
