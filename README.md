@@ -35,7 +35,7 @@ pnpm test:unit
 ### Run Storybook
 
 ```sh
-pnpm test:unit
+pnpm storybook
 ```
 
 
