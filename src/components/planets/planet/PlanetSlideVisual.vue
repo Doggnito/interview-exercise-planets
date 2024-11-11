@@ -61,7 +61,7 @@ const planetStyle = computed(() => {
   const MIN_DIAMETER_NORMALIZER = 5000;
   if (diameterNumber > MAX_DIAMETER_NORMALIZER) diameterNumber = MAX_DIAMETER_NORMALIZER;
   if (diameterNumber < MIN_DIAMETER_NORMALIZER) diameterNumber = MIN_DIAMETER_NORMALIZER;
-  const size = MIN_DIAMETER + normalizeNumber(diameterNumber, MIN_DIAMETER_NORMALIZER, MAX_DIAMETER_NORMALIZER) * minMaxDiametersDiff;
+  const size = MIN_DIAMETER + normalizeNumber({ val: diameterNumber, min: MIN_DIAMETER_NORMALIZER, max: MAX_DIAMETER_NORMALIZER}) * minMaxDiametersDiff;
   
   return {
     size: size + 'px',

@@ -1,3 +1,5 @@
+import type { Optional } from "./utils";
+
 export interface PlanetData {
   count: number;
   next: string | null;
@@ -27,11 +29,21 @@ export interface Planet {
   edited: string;
 }
 
-export type PlanetPropsForDescription = Pick<
+export type PlanetPropsContent = Pick<
   Planet,
-  "population" | "rotation_period" | "climate" | "gravity" | "created"
-> &
-  Partial<Pick<Planet, "name" | "url">>;
+  | "population"
+  | "rotation_period"
+  | "climate"
+  | "gravity"
+  | "created"
+  | "name"
+  | "url"
+>;
+
+export type PlanetPropsDescription = Optional<
+  PlanetPropsContent,
+  "name" | "url"
+>;
 
 export type PlanetSortOptionValue =
   | "population"

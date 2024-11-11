@@ -1,13 +1,13 @@
 <script setup lang="ts">
-import type { PlanetPropsForDescription } from '@/interfaces/planet';
+import type { PlanetPropsContent, PlanetPropsDescription } from '@/interfaces/planet';
 import type { Entries } from '@/interfaces/utils';
-import { addSpacesToNumber, firstToUpperCase, replaceDashesWithSpaces } from '@/utils';
+import { formatNumericWithSpaces, firstToUpperCase, replaceDashesWithSpaces, snakeToCamel } from '@/utils';
 import { computed, type PropType } from 'vue';
 import IconLink from '@/components/shared/IconLink.vue';
 
 const props = defineProps({
   planet: {
-    type: Object as PropType<PlanetPropsForDescription>,
+    type: Object as PropType<PlanetPropsContent>,
     required: true,
   }
 })
@@ -24,20 +24,20 @@ const planetUrl = computed(() => {
   return props.planet.url;
 })
 
-const preparePlanetData = (planet: PlanetPropsForDescription) => {
+const preparePlanetData = (planet: PlanetPropsDescription) => {
   delete planet.name;
   delete planet.url;
-  return (Object.entries(planet) as Entries<Omit<PlanetPropsForDescription, 'name' | 'url'>>).map(([key, value]) => {
+  return (Object.entries(planet) as Entries<Omit<PlanetPropsContent, 'name' | 'url'>>).map(([key, value]) => {
     value = value.trim();
     if (key === 'population') {
-      value = addSpacesToNumber(value);
+      value = formatNumericWithSpaces(value);
     };
     if (key === 'created') {
-      const date = new Date(value);
-      value = date.toLocaleString("pl-PL");
+      const date = (new Date(value)).toLocaleString("pl-PL");
+      value = date !== 'Invalid Date' ? date : '-';
     };
-    (key as string) = replaceDashesWithSpaces(firstToUpperCase((key)));
-    return [key, value];
+    const label = replaceDashesWithSpaces(firstToUpperCase((key)));
+    return [key, label, value];
   });
 }
 </script>
@@ -45,19 +45,20 @@ const preparePlanetData = (planet: PlanetPropsForDescription) => {
 <template>
   <div>
     <div class="relative">
-      <h2 v-text="planetName" class="planet-name" />
+      <h2 v-text="planetName" class="planet-name" data-testId="planetName" />
       <IconLink
         v-if="planetUrl"
         :href="planetUrl"
         name="open_in_new"
         size="sm"
         class="link"
+        data-testId="planetUrlIcon"
       />
     </div>
     <ul class="description">
-      <li v-for="([propertyKey, value], index) in planetModified" :key="index" class="description__item">
-        <span>{{ propertyKey }}: </span>
-        <span v-text="value" class="text-right" />
+      <li v-for="([propertyKey, label, value], index) in planetModified" :key="index" class="description__item">
+        <span>{{ label }}: </span>
+        <span v-text="value" class="text-right" :data-testid="`${snakeToCamel(propertyKey)}Value`" />
       </li>
     </ul>
   </div>

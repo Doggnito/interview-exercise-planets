@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import type { Planet, PlanetPropsForDescription } from '@/interfaces/planet';
+import type { Planet, PlanetPropsContent } from '@/interfaces/planet';
 import { computed, toRefs, type PropType } from 'vue';
 import PlanetSlideVisual from '@/components/planets/planet/PlanetSlideVisual.vue';
-import PlanetSlideDescription from '@/components/planets/planet/PlanetSlideDescription.vue';
+import PlanetSlideDescription from '@/components/planets/planet/PlanetSlideContent.vue';
 
 const props = defineProps({
   planet: {
@@ -14,7 +14,7 @@ const props = defineProps({
 const { planet } = toRefs(props);
 
 const planetForDescription = computed(() => getSelectedPlanetProperties(planet.value))
-const getSelectedPlanetProperties = ({ name, population, rotation_period, climate, gravity, created, url }: PlanetPropsForDescription) => 
+const getSelectedPlanetProperties = ({ name, population, rotation_period, climate, gravity, created, url }: PlanetPropsContent) => 
   ({ name, population, rotation_period, climate, gravity, created, url });
 </script>
 
